@@ -1,0 +1,149 @@
+<html>
+    <head>
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/@bpmn-io/form-js@0.13.0/dist/assets/form-js.css"
+        />
+        <style>
+            #form {
+                max-width: 800px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="form"></div>
+
+        <!-- ADD FORMS SCHEMAS LIKE THIS -->
+        <script id="testForm" type="application/form-schema">
+            {
+                "components": [
+                  {
+                    "label": "Number",
+                    "type": "number",
+                    "layout": {
+                      "row": "Row_1won6jn",
+                      "columns": null
+                    },
+                    "id": "Field_0s1l1bi",
+                    "key": "field_1ri5o28"
+                  },
+                  {
+                    "subtype": "date",
+                    "dateLabel": "Date",
+                    "label": "Date time",
+                    "type": "datetime",
+                    "layout": {
+                      "row": "Row_016fa0q",
+                      "columns": null
+                    },
+                    "id": "Field_1c97omh",
+                    "key": "field_0w775ui"
+                  },
+                  {
+                    "label": "Text field",
+                    "type": "textfield",
+                    "layout": {
+                      "row": "Row_1ndzk8p",
+                      "columns": null
+                    },
+                    "id": "Field_1t8p56d",
+                    "key": "field_0iiaczw"
+                  }
+                ],
+                "type": "default",
+                "id": "Form_1daiwi4",
+                "exporter": {
+                  "name": "form-js (https://demo.bpmn.io)",
+                  "version": "0.13.0"
+                },
+                "schemaVersion": 8
+              }
+        </script>
+        <script id="testForm2" type="application/form-schema">
+            {
+                "components": [
+                  {
+                    "label": "Number",
+                    "type": "number",
+                    "layout": {
+                      "row": "Row_1won6jn",
+                      "columns": null
+                    },
+                    "id": "Field_0s1l1bi",
+                    "key": "field_1ri5o28"
+                  },
+                  {
+                    "values": [
+                      {
+                        "label": "Value",
+                        "value": "value"
+                      }
+                    ],
+                    "label": "Checklist",
+                    "type": "checklist",
+                    "layout": {
+                      "row": "Row_1dw0gmr",
+                      "columns": null
+                    },
+                    "id": "Field_0bsfh1y",
+                    "key": "field_0vgwpmk"
+                  },
+                  {
+                    "values": [
+                      {
+                        "label": "Value",
+                        "value": "value"
+                      }
+                    ],
+                    "label": "Radio",
+                    "type": "radio",
+                    "layout": {
+                      "row": "Row_13z17fp",
+                      "columns": null
+                    },
+                    "id": "Field_0gs1zvu",
+                    "key": "field_1nnrmwu"
+                  }
+                ],
+                "type": "default",
+                "id": "Form_1daiwi4",
+                "exporter": {
+                  "name": "form-js (https://demo.bpmn.io)",
+                  "version": "0.13.0"
+                },
+                "schemaVersion": 8
+              }
+        </script>
+        <!-- END OF FORMS SCHEMAS -->
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"></script>
+        <script src="https://unpkg.com/@bpmn-io/form-js@0.13.0/dist/form-viewer.umd.js"></script>
+
+        <script>
+            const container = document.querySelector('#form');
+            const gui = new dat.GUI();
+            const panel = gui.addFolder('Choose form');
+            const forms = {};
+
+            const schemas = document.querySelectorAll('[type="application/form-schema"]');
+
+            for (const schema of schemas) {
+                forms[schema.id] = renderForm.bind(null, schema.id);
+                gui.add(forms, schema.id);
+            }
+
+            function renderForm(formId) {
+                container.innerHTML = null;
+
+                const schema = JSON.parse(document.querySelector(`#${formId}`).textContent);
+
+                FormViewer.createForm({
+                    container,
+                    schema,
+                });
+            }
+
+            renderForm('testForm');
+        </script>
+    </body>
+</html>
